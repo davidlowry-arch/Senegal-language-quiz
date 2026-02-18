@@ -74,6 +74,9 @@ function nextQuestion() {
     currentCorrectIndex = getRandomUnusedIndex();
     const correctWord = wordList[currentCorrectIndex];
 
+    // Update progress
+    document.getElementById("progressText").textContent = `Question ${currentQuestion + 1}/20`;
+
     // Show French gloss at top
     document.getElementById("questionWord").textContent = correctWord.gloss;
 
@@ -83,6 +86,7 @@ function nextQuestion() {
 
     currentQuestion++;
 }
+
 
 function generateOptions(correctIndex) {
     const options = [wordList[correctIndex]];
