@@ -11,6 +11,7 @@ let currentQuestion = 0;
 let score = 0;
 let firstAttempt = true;
 let currentCorrectIndex = null;
+let currentAudio = null;
 
 const ding = new Audio("sounds/ding.mp3");
 const thud = new Audio("sounds/thud.mp3");
@@ -73,16 +74,12 @@ function nextQuestion() {
     currentCorrectIndex = getRandomUnusedIndex();
     const correctWord = wordList[currentCorrectIndex];
 
-    document.getElementById("questionWord").textContent = correctWord.word;
+    // Show French gloss at top
+    document.getElementById("questionWord").textContent = correctWord.gloss;
 
-    const img = document.getElementById("questionImage");
-    img.src = `assets/${correctWord.language}/images/${correctWord.image}`;
-    img.onclick = () => new Audio(`assets/${correctWord.language}/audio/${correctWord.audio}`).play();
-
+    // Generate options
     const options = generateOptions(currentCorrectIndex);
     renderOptions(options);
-
-    new Audio(`assets/${correctWord.language}/audio/${correctWord.audio}`).play();
 
     currentQuestion++;
 }
@@ -107,26 +104,31 @@ function renderOptions(options) {
     options.forEach(option => {
         const card = document.createElement("div");
         card.className = "option-card";
+        card.textContent = option.word;
 
-        card.innerHTML = `
-            <img src="assets/${option.language}/images/${option.image}">
-            <p>${option.gloss}</p>
-        `;
+        card.onclick = (event) => checkAnswer(option, card);
 
-        card.onclick = () => checkAnswer(option);
         container.appendChild(card);
     });
 }
 
-function checkAnswer(option) {
+function checkAnswer(option, cardElement) {
     const correct = wordList[currentCorrectIndex];
 
     if (option.word === correct.word) {
         if (firstAttempt) score++;
-        ding.play();
-        new Audio(`assets/${correct.language}/audio/${correct.audio}`).play();
-        document.getElementById("nextBtn").classList.remove("hidden");
         firstAttempt = false;
+        ding.play();
+
+        // Play audio after ding
+        if (currentAudio) currentAudio.pause(); // stop previous
+        currentAudio = new Audio(`assets/${correct.language}/audio/${correct.audio}`);
+        currentAudio.play();
+
+        // Allow replay by clicking the same card
+        cardElement.onclick = () => currentAudio.play();
+
+        document.getElementById("nextBtn").classList.remove("hidden");
     } else {
         thud.play();
         firstAttempt = false;
