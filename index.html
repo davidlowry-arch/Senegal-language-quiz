@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz des Langues Sénégalaises</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- START SCREEN -->
+<div id="startScreen" class="screen active">
+    <img src="start.jpg" class="main-image">
+    <button class="main-btn" onclick="showLanguageMenu()">Commencer</button>
+</div>
+
+<!-- LANGUAGE MENU -->
+<div id="languageScreen" class="screen">
+    <h2>Choisissez une langue</h2>
+    <div id="languageButtons" class="button-grid"></div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="quizScreen" class="screen">
+    <div class="question-container">
+        <h2 id="questionWord"></h2>
+        <img id="questionImage" class="main-image">
+    </div>
+
+    <div id="optionsContainer" class="options-grid"></div>
+
+    <button id="nextBtn" class="main-btn hidden" onclick="nextQuestion()">
+        Prochaine question
+    </button>
+</div>
+
+<!-- FINAL SCREEN -->
+<div id="finalScreen" class="screen">
+    <div id="finalMessage"></div>
+    <button class="main-btn" onclick="restartGame()">Rejouer</button>
+    <button class="main-btn secondary" onclick="showLanguageMenu()">Changer de langue</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
